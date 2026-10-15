@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import './globals-legacy.css';
+
+/* Ajustes finos da camada Next.js: impressão e utilitários Tailwind convivem
+   com o CSS legado (variáveis --bg, --surface, [data-theme], etc). */
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}

@@ -85,27 +85,37 @@ O banco padrão foi auditado a partir do gabarito completo: são 147 acordes e 1
 
 Use **＋ Pasta** no cabeçalho do repertório para criar coleções. As pastas podem ser abertas, recolhidas, renomeadas ou excluídas. Para mover a cifra atual, escolha o destino no campo **Pasta da música**; ao excluir uma pasta, suas músicas continuam disponíveis em **Sem pasta**. Pastas e vínculos também acompanham a exportação e a importação do repertório.
 
-## Estrutura
-
-O projeto foi mantido intencionalmente pequeno, sem frameworks de interface ou SDKs externos desnecessários.
+## Estrutura (Next.js + React + Tailwind)
 
 ```text
-api/
-└── ollama.js
-desktop/
-├── main.js
-└── preload.cjs
-src/
-├── ai-client.js
-├── chord-map.js
-├── chords.js
-├── default-chords.json
-├── main.js
-├── voicings.js
-├── storage.js
-└── styles.css
-vite.config.js
+app/
+├── layout.js            # shell HTML, metadados e tema
+├── page.jsx             # composição das telas (client component)
+├── globals.css          # Tailwind + CSS legado
+└── api/ai/
+    ├── status/route.js  # GET: configuração do Ollama
+    └── [action]/route.js# POST: reharmonize | organize | chord-map
+components/
+├── Sidebar.jsx          # repertório, pastas, busca, import/export
+├── Editor.jsx           # formulário da cifra + transposição + organizar
+├── Preview.jsx          # pré-visualização e diagramas
+├── ChordLibrary.jsx     # biblioteca com busca e categorias
+├── ChordDialog.jsx      # cadastro/edição de acordes (braço interativo)
+└── AiDialog.jsx         # rearmonização com IA
+hooks/
+└── useCifrador.js       # estado global (músicas, pastas, acordes, layout)
+lib/
+├── chords.js / chord-map.js / chord-theory.js / voicings.js
+├── render-song.js       # [C] -> HTML da cifra
+├── songs.js             # factories e normalização
+├── storage.js           # localStorage (seguro p/ SSR)
+├── ai-client.js         # fetch das rotas /api/ai/*
+└── server/ollama.js     # lógica do Ollama (usada pelas API routes)
 ```
+
+O legado Vite/Electron continua em `src/`, `api/`, `desktop/` e `vite.config.js`
+apenas como referência — o build oficial agora é `npm run dev` / `npm run build`
+(Next.js). Rode `npm run legacy:dev` somente se precisar do app antigo.
 
 ## Dados
 
