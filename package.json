@@ -1,0 +1,56 @@
+{
+  "name": "cifrador",
+  "version": "2.0.0",
+  "private": true,
+  "author": "Cifrador",
+  "description": "Aplicativo desktop local-first para criar, organizar e transpor cifras.",
+  "type": "module",
+  "main": "desktop/main.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "desktop": "npm run build && electron .",
+    "desktop:package": "npm run build && electron-builder --win nsis",
+    "desktop:dir": "npm run build && electron-builder --dir",
+    "desktop:smoke": "npm run desktop:dir && node scripts/smoke-desktop.mjs",
+    "preview": "vite preview",
+    "test": "node --test src/chord-map.test.js src/chord-theory.test.js src/default-chords.test.js src/storage.test.js src/voicings.test.js api/ollama.test.js"
+  },
+  "devDependencies": {
+    "electron": "^44.7.0",
+    "electron-builder": "^26.15.3",
+    "vite": "^8.3.2"
+  },
+  "build": {
+    "appId": "br.com.cifrador.app",
+    "productName": "Cifrador",
+    "asar": true,
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "desktop/**/*",
+      "api/**/*",
+      "src/chord-map.js",
+      "src/chord-theory.js",
+      "src/voicings.js",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        }
+      ],
+      "artifactName": "Cifrador-Setup-${version}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
+  }
+}
