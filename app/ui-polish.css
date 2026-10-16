@@ -1,0 +1,437 @@
+/* Camada de polimento da UI (Next.js + CSS legado).
+   Motivo: alguns componentes usam classes que não existiam no CSS legado
+   (editor-grid, dialog-backdrop, preview-column etc.), o que deixava
+   textos e inputs "colados". Aqui definimos essas classes com ritmo
+   vertical e espaçamentos consistentes, reutilizando as variáveis
+   --bg, --surface, --border, --accent etc. */
+
+/* ui-polish (CSS puro, sem @layer: este arquivo é importado via @import) */
+
+/* ---------- Editor ---------- */
+  .editor-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: 30px;
+    margin-bottom: 20px;
+  }
+
+  .editor-heading > span {
+    color: var(--accent);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .editor-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px 14px;
+    margin-top: 4px;
+  }
+
+  .editor-grid label {
+    display: grid;
+    gap: 8px;
+    min-width: 0;
+    color: var(--muted-strong);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .editor-grid label input,
+  .editor-grid label select {
+    height: 43px;
+    padding: 0 12px;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: normal;
+    text-transform: none;
+  }
+
+  .editor-grid label:first-child {
+    grid-column: 1 / -1;
+  }
+
+  .transpose-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-top: 20px;
+    padding: 12px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+  }
+
+  .transpose-row > span {
+    margin-right: auto;
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .transpose-row button,
+  .transpose-row strong {
+    display: grid;
+    width: 34px;
+    height: 34px;
+    place-items: center;
+    border-radius: 8px;
+  }
+
+  .transpose-row button {
+    background: var(--surface-soft);
+    border: 1px solid var(--border);
+    font-size: 16px;
+  }
+
+  .transpose-row button:hover {
+    border-color: var(--accent);
+  }
+
+  .transpose-row strong {
+    color: var(--accent);
+    font-size: 13px;
+  }
+
+  .content-label {
+    display: grid;
+    gap: 8px;
+    margin-top: 20px;
+    color: var(--muted-strong);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .content-label textarea {
+    font-weight: 400;
+    letter-spacing: normal;
+    text-transform: none;
+  }
+
+  .editor-actions {
+    gap: 10px;
+  }
+
+  /* ---------- Preview (layout lado a lado) ---------- */
+  .preview-column {
+    min-width: 0;
+    padding: 44px 0 70px;
+  }
+
+  .preview-column .song-preview {
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+  }
+
+  .preview-column .chords-used {
+    margin-top: 18px;
+  }
+
+  .chords-used-heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+    padding-bottom: 13px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .chords-used-heading > span {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 19px;
+  }
+
+  .chords-used-heading small {
+    color: var(--muted);
+    font-size: 11px;
+  }
+
+  .contents {
+    display: contents;
+  }
+
+  /* ---------- Diálogos (base compartilhada) ---------- */
+  .dialog-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    display: grid;
+    place-items: center;
+    padding: 20px;
+    overflow: auto;
+    background: rgba(5, 8, 6, 0.76);
+    backdrop-filter: blur(5px);
+  }
+
+  .dialog {
+    width: min(760px, calc(100vw - 30px));
+    max-height: min(88vh, 840px);
+    overflow: auto;
+    padding: 0;
+    color: var(--text);
+    background: var(--surface-raised);
+    border: 1px solid var(--border-strong);
+    border-radius: 16px;
+    box-shadow: 0 30px 100px rgba(0, 0, 0, 0.48);
+  }
+
+  .dialog.wide {
+    width: min(1160px, calc(100vw - 30px));
+  }
+
+  .dialog .dialog-header {
+    position: sticky;
+    top: 0;
+    background: var(--surface-raised);
+  }
+
+  .dialog > *:not(.dialog-header):not(.dialog-actions):not(.dialog-footer) {
+    margin-inline: 24px;
+  }
+
+  .dialog > .dialog-grid {
+    margin-top: 24px;
+  }
+
+  .dialog-label {
+    display: grid;
+    gap: 8px;
+    margin-top: 18px;
+    color: var(--muted-strong);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .dialog-label input,
+  .dialog-grid label input,
+  .dialog-grid label select,
+  .dialog-label textarea {
+    font-weight: 400;
+    letter-spacing: normal;
+    text-transform: none;
+  }
+
+  .dialog-grid label {
+    display: grid;
+    gap: 8px;
+    min-width: 0;
+    color: var(--muted-strong);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .dialog-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: flex-end;
+    margin: 24px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border);
+  }
+
+  .dialog-spacer {
+    flex: 1;
+  }
+
+  .ai-result-meta {
+    margin: 14px 0 8px;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  .batch-chord-preview.active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+
+  /* ---------- Braço interativo do ChordDialog ---------- */
+  .neck-toolbar {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
+    margin-top: 16px;
+    padding: 4px;
+    background: var(--surface-soft);
+    border-radius: 9px;
+  }
+
+  .neck-toolbar button {
+    min-height: 34px;
+    color: var(--muted);
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .neck-toolbar button.active {
+    color: var(--accent-ink);
+    background: var(--accent);
+  }
+
+  .interactive-neck {
+    display: grid;
+    gap: 10px;
+    margin-top: 14px;
+    padding: 14px;
+    background: color-mix(in srgb, var(--surface-soft) 78%, black);
+    border: 1px solid var(--border-strong);
+    border-radius: 10px;
+  }
+
+  .neck-strings {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 6px;
+  }
+
+  .string-toggle {
+    min-height: 32px;
+    color: var(--muted-strong);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    font-size: 13px;
+  }
+
+  .string-toggle.open {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .string-toggle.muted {
+    opacity: 0.55;
+  }
+
+  .neck-row {
+    display: grid;
+    grid-template-columns: 44px repeat(6, 1fr);
+    gap: 6px;
+    align-items: center;
+  }
+
+  .neck-fret-label {
+    color: var(--muted);
+    font-size: 11px;
+    text-align: right;
+  }
+
+  .neck-grid .neck-cell {
+    height: 40px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    font-size: 14px;
+  }
+
+  .neck-grid .neck-cell.active {
+    color: var(--accent-ink);
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .chord-map-preview {
+    margin-top: 16px;
+    padding: 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 11px;
+  }
+
+  /* ---------- Biblioteca ---------- */
+  .library-section {
+    margin-top: 30px;
+  }
+
+  .library-section > h2 {
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+    margin: 0 0 14px;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 24px;
+    font-weight: 400;
+  }
+
+  .library-section > h2 small {
+    color: var(--muted);
+    font-family: inherit;
+    font-size: 12px;
+  }
+
+  .library-chord-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 4px 2px;
+  }
+
+  .library-chord-actions button {
+    min-height: 30px;
+    padding: 0 12px;
+    color: var(--muted-strong);
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  .library-chord-actions button:hover {
+    color: var(--text);
+    border-color: var(--accent);
+  }
+
+  .danger-link {
+    color: var(--danger) !important;
+    border-color: color-mix(in srgb, var(--danger) 34%, transparent) !important;
+  }
+
+  .chord-variant {
+    display: block;
+    margin-top: 6px;
+    color: var(--muted);
+    font-size: 10px;
+    text-align: center;
+  }
+
+  @media (max-width: 600px) {
+    .editor-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .dialog > *:not(.dialog-header):not(.dialog-actions):not(.dialog-footer) {
+      margin-inline: 16px;
+    }
+
+    .dialog-actions {
+      margin: 18px 16px 16px;
+      flex-wrap: wrap;
+    }
+
+    .dialog-actions > button {
+      flex: 1 1 auto;
+    }
+
+    .preview-column {
+      padding: 30px 16px 48px;
+    }
+  }

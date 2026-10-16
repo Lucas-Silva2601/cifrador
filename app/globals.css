@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 @import './globals-legacy.css';
+@import './ui-polish.css';
 
 /* Ajustes finos da camada Next.js: impressão e utilitários Tailwind convivem
    com o CSS legado (variáveis --bg, --surface, [data-theme], etc). */

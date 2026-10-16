@@ -1,51 +1,106 @@
 # Cifrador
 
-Aplicativo desktop local-first para criar, organizar, transpor, rearmonizar e imprimir repertórios. Ele roda como um programa do Windows, sem navegador e sem servidor web, e salva os dados no perfil do usuário.
+**Seu repertório, no seu tom.** Aplicativo *local-first* para criar, organizar, transpor, rearmonizar e imprimir cifras — no navegador durante o desenvolvimento e como programa de Windows (Electron) no uso final.
 
-## Usar como aplicativo
+## ✨ Destaques
 
-Para compilar e abrir o programa durante o desenvolvimento:
+**Repertório**
+
+- Músicas organizadas em pastas (criar, renomear, excluir, recolher)
+- Busca instantânea por título, artista e pasta
+- Duplicar, importar e exportar o repertório em JSON
+- Salvamento automático local + indicador "Salvo localmente"
+
+**Cifras**
+
+- Editor com pré-visualização em tempo real (`[C]`, `[Am7]`, `[F#m]`…)
+- Transposição de tom com suporte a baixos invertidos
+- Organização automática da cifra com IA antes de rearmonizar
+- Folha de impressão limpa (vale como PDF) com painel de acompanhamento em até 4 colunas
+
+**Acordes**
+
+- Biblioteca visual com busca e classificação (maiores, menores, sétimas, suspensas, diminutos, aumentados…)
+- 147 acordes e 1.066 mapas auditados (afinação `E-A-D-G-B-e`, até 24 casas)
+- Cadastro por mapa textual ou clicando no braço interativo (notas, pestana, corda solta/abafada)
+- Reconhecimento de `(9ª casa)` com deslocamento automático do desenho
+
+**IA (Ollama)**
+
+- Rearmonização com inversões, linhas de baixo, acordes de passagem, dominantes secundários e cadências
+- Auditoria de compatibilidade melódica, ritmo harmônico, condução do baixo e coerência entre estrofes
+- Organização de cifras e revisão de mapas de acordes
+
+## 🧰 Stack
+
+| Camada     | Tecnologia                          |
+| ---------- | ----------------------------------- |
+| Front      | Next.js 15, React 19, Tailwind CSS 3 |
+| Desktop    | Electron + electron-builder (NSIS)  |
+| IA         | Ollama (local ou Cloud) via API routes |
+| Dados      | localStorage (web) · `%APPDATA%` (desktop) |
+| Testes     | `node --test`                       |
+
+## 🚀 Comece em 2 minutos
 
 ```bash
 npm install
-npm run desktop
+npm run dev:open   # sobe em http://localhost:3000 e abre o navegador
 ```
 
-Para gerar o instalador do Windows:
+Sem abertura automática:
 
 ```bash
-npm run desktop:package
+npm run dev        # só o servidor
 ```
 
-O instalador será criado na pasta `release/`. Depois de instalado, o Cifrador pode ser aberto pelo Menu Iniciar ou pelo atalho da Área de Trabalho.
+Produção local:
 
-O modo web continua disponível apenas para desenvolvimento com `npm run dev`.
+```bash
+npm run build
+npm run start:open # serve o build e abre o navegador
+```
 
-## Recursos
+Parar e reiniciar:
 
-- editor e pré-visualização de cifras em tempo real;
-- acordes no formato `[C]`, `[Am7]`, `[F#m]` e similares;
-- transposição de tom, incluindo baixos invertidos;
-- biblioteca visual com uma posição escolhida por acorde, considerando facilidade e deslocamento no braço;
-- folha redimensionável com painel de acompanhamento automático em até quatro colunas;
-- pastas de repertório para organizar e acessar músicas por coleção;
-- cadastro de acordes a partir de mapas textuais, com leitura de casa, dedos e pestana;
-- reconhecimento de posições como `(9ª casa)`, com deslocamento automático do desenho para a casa indicada;
-- braço interativo para adicionar, remover ou reposicionar notas com cliques, além de editar casas, dedos e posição numericamente;
-- salvamento individual de um acorde durante a edição de lotes, com opção posterior para salvar todos os restantes juntos;
-- biblioteca exclusiva com busca e classificação por maiores, menores, sétimas, quartas e outras extensões;
-- rearmonização profissional com inversões, linhas de baixo, acordes de passagem, dominantes secundários e cadências;
-- auditoria da rearmonização por compatibilidade melódica, ritmo harmônico, condução do baixo e coerência entre estrofes, com campo opcional para notas importantes da melodia;
-- cálculo automático e determinístico de acordes ausentes, com auditoria das notas, do baixo, das cordas e da extensão do braço antes do salvamento;
-- organização automática da cifra com IA antes da rearmonização;
-- repertório salvo automaticamente no computador;
-- busca, duplicação, importação e exportação em JSON;
-- impressão limpa, que também permite salvar como PDF;
-- tema claro e escuro e layout responsivo.
+```bash
+npm run stop          # fecha o servidor na porta 3000
+npm run stop:all      # fecha o servidor + o Electron
+npm run restart       # para e sobe de novo (modo dev, sem abrir aba)
+npm run restart:open  # para e sobe de novo abrindo o navegador
+```
 
-## Configurar o Ollama
+> Para outra porta: `PORT=4000 npm run stop`. Para reiniciar em modo produção: `node scripts/restart-app.mjs start --open` (após `npm run build`).
 
-O arquivo `.env` já está criado na raiz e não é enviado ao Git. Para usar o Ollama Cloud, preencha:
+Aplicativo Windows:
+
+```bash
+npm run desktop           # build + abre o Electron (dev)
+npm run desktop:package   # gera o instalador em release/
+```
+
+> Para trocar a porta: `PORT=4000 npm run dev:open`.
+
+## 📜 Scripts
+
+| Comando             | O que faz                                        |
+| ------------------- | ------------------------------------------------ |
+| `dev` / `dev:open`  | Next em modo dev, sem / com abertura do navegador |
+| `build`             | Build de produção do Next                        |
+| `start` / `start:open` | Serve o build, sem / com abertura do navegador |
+| `stop` / `stop:all` | Fecha o servidor (porta 3000); `:all` inclui o Electron |
+| `restart` / `restart:open` | Para e sobe de novo em dev, sem / com abertura do navegador |
+| `desktop`           | Build + abre o app Electron                      |
+| `desktop:package`   | Gera o instalador Windows (NSIS) em `release/`   |
+| `desktop:dir`       | Gera a pasta executável sem instalador           |
+| `test`              | Roda a suíte de testes (`node --test`)           |
+| `legacy:dev`        | App antigo em Vite (referência)                  |
+
+A abertura automática usa `scripts/open-app.mjs`: aguarda o Next responder e abre a aba no navegador padrão (Windows, macOS e Linux). A parada usa `scripts/stop-app.mjs` (localiza o PID pela porta e finaliza) e o reinício usa `scripts/restart-app.mjs` (para, depois sobe em `dev` ou `start`).
+
+## 🤖 IA com Ollama
+
+Copie `.env.example` para `.env`:
 
 ```dotenv
 OLLAMA_API_KEY=sua_chave_aqui
@@ -53,7 +108,7 @@ OLLAMA_BASE_URL=https://ollama.com/api
 OLLAMA_MODEL=gemma4:31b
 ```
 
-Para uma instalação local, a chave pode ficar vazia:
+Instalação local (sem chave):
 
 ```dotenv
 OLLAMA_API_KEY=
@@ -61,13 +116,13 @@ OLLAMA_BASE_URL=http://127.0.0.1:11434/api
 OLLAMA_MODEL=nome-do-modelo-local
 ```
 
-Durante o desenvolvimento, reinicie o aplicativo depois de alterar o `.env`. A chave é lida somente pelo processo principal e não é enviada para a interface.
+- Reinicie o app após alterar o `.env`.
+- A chave é lida só no servidor — nunca vai para o navegador.
+- No app instalado, coloque uma cópia do `.env` ao lado de `Cifrador.exe`. Sem ele, o app tenta o Ollama local em `http://127.0.0.1:11434/api`.
 
-Na versão instalada, coloque uma cópia do `.env` ao lado de `Cifrador.exe`. Sem esse arquivo, o aplicativo tenta usar o Ollama local em `http://127.0.0.1:11434/api`.
+## 🎸 Cadastrar um acorde
 
-## Cadastrar um acorde
-
-Abra **Cadastrar acorde** e informe o nome. Você pode montar a posição clicando diretamente no braço ou, opcionalmente, colar um mapa como:
+Em **＋ Cadastrar acorde**, informe o nome e monte a posição no braço — ou cole um mapa:
 
 ```text
 Casa 3: |---(Pestana do Dedo 1)---|
@@ -77,46 +132,29 @@ X  3  5  5  5  3
    1  2  3  4  1
 ```
 
-O parser reconhece `X` como corda abafada, `0` como corda solta, números como casas, posições entre parênteses e pestanas. A posição declarada, como `(9ª casa)`, é guardada sem deslocar os números do mapa, e pestanas possíveis são identificadas automaticamente. Antes de salvar, a leitura pode ser corrigida diretamente no braço: clique nas casas para adicionar ou remover notas, no topo para alternar corda solta/abafada e use o modo **Pestana** para marcar seu início e fim.
+O parser entende `X` (abafada), `0` (solta), números (casas), `(9ª casa)` e pestanas, com correção direto no braço antes de salvar. Dá para salvar um acorde no meio de um lote e concluir os restantes depois.
 
-O banco padrão foi auditado a partir do gabarito completo: são 147 acordes e 1.066 mapas únicos, validados pela afinação `E-A-D-G-B-e`, pelo limite de 24 casas e pela janela visual de cinco casas.
+## 📁 Pastas de músicas
 
-## Pastas de músicas
+Use **＋ Pasta** no cabeçalho do repertório. Para mover a cifra atual, troque o campo **Pasta da música** no editor. Ao excluir uma pasta, as músicas são preservadas em **Sem pasta** — e tudo acompanha a exportação/importação.
 
-Use **＋ Pasta** no cabeçalho do repertório para criar coleções. As pastas podem ser abertas, recolhidas, renomeadas ou excluídas. Para mover a cifra atual, escolha o destino no campo **Pasta da música**; ao excluir uma pasta, suas músicas continuam disponíveis em **Sem pasta**. Pastas e vínculos também acompanham a exportação e a importação do repertório.
-
-## Estrutura (Next.js + React + Tailwind)
+## 🗂️ Estrutura
 
 ```text
 app/
-├── layout.js            # shell HTML, metadados e tema
-├── page.jsx             # composição das telas (client component)
-├── globals.css          # Tailwind + CSS legado
-└── api/ai/
-    ├── status/route.js  # GET: configuração do Ollama
-    └── [action]/route.js# POST: reharmonize | organize | chord-map
-components/
-├── Sidebar.jsx          # repertório, pastas, busca, import/export
-├── Editor.jsx           # formulário da cifra + transposição + organizar
-├── Preview.jsx          # pré-visualização e diagramas
-├── ChordLibrary.jsx     # biblioteca com busca e categorias
-├── ChordDialog.jsx      # cadastro/edição de acordes (braço interativo)
-└── AiDialog.jsx         # rearmonização com IA
-hooks/
-└── useCifrador.js       # estado global (músicas, pastas, acordes, layout)
-lib/
-├── chords.js / chord-map.js / chord-theory.js / voicings.js
-├── render-song.js       # [C] -> HTML da cifra
-├── songs.js             # factories e normalização
-├── storage.js           # localStorage (seguro p/ SSR)
-├── ai-client.js         # fetch das rotas /api/ai/*
-└── server/ollama.js     # lógica do Ollama (usada pelas API routes)
+├── layout.js / page.jsx      # shell HTML e composição das telas
+├── globals.css               # Tailwind + legado
+├── ui-polish.css             # espaçamento da UI (editor, diálogos, biblioteca)
+└── api/ai/                   # status (GET) · reharmonize/organize/chord-map (POST)
+components/                   # Sidebar · Editor · Preview · ChordLibrary · ChordDialog · AiDialog
+hooks/useCifrador.js          # estado global (músicas, pastas, acordes, layout)
+lib/                          # teoria, mapas, voicings, render, storage, cliente/server IA
+scripts/open-app.mjs          # dev:open / start:open
+desktop/ · src/ · api/        # Electron e legado Vite (referência)
 ```
 
-O legado Vite/Electron continua em `src/`, `api/`, `desktop/` e `vite.config.js`
-apenas como referência — o build oficial agora é `npm run dev` / `npm run build`
-(Next.js). Rode `npm run legacy:dev` somente se precisar do app antigo.
+## 💾 Dados
 
-## Dados
-
-No aplicativo do Windows, as músicas e preferências ficam em `%APPDATA%\Cifrador\dados.json`. No modo web de desenvolvimento, continuam no `localStorage`. Use **Exportar** regularmente para criar uma cópia portátil do repertório.
+- **Desktop (Windows):** `%APPDATA%\Cifrador\dados.json`
+- **Web (dev):** `localStorage`
+- Exporte com frequência em **Exportar** para ter uma cópia portátil do repertório.
