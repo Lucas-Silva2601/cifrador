@@ -8,9 +8,16 @@ export default function Editor({
   if (!song) return null;
   return (
     <section className="editor-panel">
-      <div className="editor-heading">
-        <span>Editar cifra</span>
-        <button type="button" className="panel-collapse-button" onClick={onToggleCollapse} aria-expanded={!collapsed}>
+      <div className="editor-panel-heading">
+        <span className="section-kicker">Editar cifra</span>
+        <button
+          type="button"
+          className="panel-collapse-button editor-collapse-button"
+          onClick={onToggleCollapse}
+          aria-expanded={!collapsed}
+          aria-label={collapsed ? 'Expandir editor' : 'Recolher editor'}
+          title={collapsed ? 'Expandir editor' : 'Recolher editor'}
+        >
           {collapsed ? '›' : '‹'}
         </button>
       </div>

@@ -299,7 +299,13 @@ export default function HomePage() {
                 onToggleCollapse={() => updateLayout({ editorCollapsed: !layout.editorCollapsed })}
               />
             </div>
-            <Preview song={currentSong} customChords={customChords} customChordVersion={customChordVersion} />
+            <Preview
+              song={currentSong}
+              customChords={customChords}
+              customChordVersion={customChordVersion}
+              previewWidthRatio={layout.previewWidthRatio}
+              onPreviewWidthChange={(previewWidthRatio) => updateLayout({ previewWidthRatio })}
+            />
           </div>
         )}
       </main>

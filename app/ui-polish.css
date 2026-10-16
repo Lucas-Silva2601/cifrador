@@ -8,7 +8,8 @@
 /* ui-polish (CSS puro, sem @layer: este arquivo é importado via @import) */
 
 /* ---------- Editor ---------- */
-  .editor-heading {
+  .editor-heading,
+  .editor-panel-heading {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -17,7 +18,12 @@
     margin-bottom: 20px;
   }
 
-  .editor-heading > span {
+  .editor-collapsed .editor-panel-heading {
+    margin-bottom: 0;
+  }
+
+  .editor-heading > span,
+  .editor-panel-heading > span {
     color: var(--accent);
     font-size: 10px;
     font-weight: 700;
@@ -122,23 +128,17 @@
     gap: 10px;
   }
 
-  /* ---------- Preview (layout lado a lado) ---------- */
-  .preview-column {
+  /* ---------- Preview (folha + trilho de diagramas redimensionável) ---------- */
+  .preview-panel {
     min-width: 0;
-    padding: 44px 0 70px;
   }
 
-  .preview-column .song-preview {
-    width: 100%;
-    min-width: 0;
-    max-width: none;
+  .preview-panel .song-preview {
+    min-width: min(360px, 100%);
   }
 
-  .preview-column .chords-used {
-    margin-top: 18px;
-  }
-
-  .chords-used-heading {
+  .chords-used-heading,
+  .chords-heading {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
@@ -147,12 +147,16 @@
     border-bottom: 1px solid var(--border);
   }
 
-  .chords-used-heading > span {
+  .chords-used-heading > span,
+  .chords-heading > h2 {
     font-family: Georgia, 'Times New Roman', serif;
     font-size: 19px;
+    font-weight: 400;
+    margin: 0;
   }
 
-  .chords-used-heading small {
+  .chords-used-heading small,
+  .chords-heading > span {
     color: var(--muted);
     font-size: 11px;
   }
@@ -431,7 +435,7 @@
       flex: 1 1 auto;
     }
 
-    .preview-column {
+    .preview-panel {
       padding: 30px 16px 48px;
     }
   }
